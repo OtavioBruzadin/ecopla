@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtUtils {
-    @Value("${app.jwtSecret}") private String jwtSecret;
-    @Value("${app.jwtExpirationMs}") private int jwtExpirationMs;
+    @Value("${jwt.secret}")    private String jwtSecret;
+    @Value("${jwt.expirationMs}")    private int jwtExpirationMs;
 
     private SecretKey getKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
@@ -23,7 +23,7 @@ public class JwtUtils {
                 .setSubject(authentication.getName())
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + jwtExpirationMs))
-                .signWith(getKey(), SignatureAlgorithm.HS512)
+                .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
