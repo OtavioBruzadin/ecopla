@@ -40,7 +40,7 @@ public class ProdutoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Produto> criar(@Valid @RequestBody Produto p) {
         Produto criado = service.criar(p);
         return ResponseEntity.status(201).body(criado);

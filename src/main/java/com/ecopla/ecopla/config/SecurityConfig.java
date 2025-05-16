@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/signup-admin").permitAll()
                 .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
-                .requestMatchers("/api/produtos/**").hasRole("ADMIN")
+                .requestMatchers("/api/produtos/create").hasRole("ADMIN")
                 .requestMatchers("/api/cart/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
