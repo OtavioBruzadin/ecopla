@@ -5,6 +5,7 @@ import com.ecopla.ecopla.model.CartItem;
 import com.ecopla.ecopla.repository.CartRepository;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class CartService {
@@ -26,4 +27,8 @@ public class CartService {
         return repo.save(cart);
     }
     public void clearCart(String userId) { repo.deleteById(userId); }
+
+    public List<CartItem> getCartItems(String userId) {
+        return getCart(userId).getItems();
+    }
 }
