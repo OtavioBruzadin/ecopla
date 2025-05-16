@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/signup-admin").hasRole("ADMIN")
                 .requestMatchers("/api/auth/signup").permitAll()
                 .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
+                .requestMatchers("/api/produtos/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
