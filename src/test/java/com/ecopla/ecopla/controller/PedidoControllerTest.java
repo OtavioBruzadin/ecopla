@@ -34,7 +34,7 @@ class PedidoControllerTest {
         List<Pedido> lista = List.of(new Pedido(), new Pedido());
         when(pedidoService.buscarPedidosDoUsuario("user1")).thenReturn(lista);
 
-        mvc.perform(get("/api/pedidos").with(user("user1")))
+        mvc.perform(get("/api/pedidos/mine").with(user("user1")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
     }

@@ -28,7 +28,7 @@ public class PedidoController {
         return ResponseEntity.status(201).body(pedido);
     }
 
-    @GetMapping
+    @GetMapping("/mine")
     public ResponseEntity<List<Pedido>> listarMeusPedidos(Authentication auth) {
         String userId = auth.getName();
         return ResponseEntity.ok(pedidoService.buscarPedidosDoUsuario(userId));
