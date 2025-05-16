@@ -7,6 +7,7 @@ import com.ecopla.ecopla.service.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/produtos")
@@ -20,6 +21,16 @@ public class ProdutoController {
     @GetMapping
     public List<Produto> listar() {
         return service.listarTodos();
+    }
+
+    @GetMapping("/search")
+    public List<Produto> search(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) String material,
+            @RequestParam(required = false) String cor) {
+        return service.search(nome, minPrice, maxPrice, material, cor);
     }
 
     @GetMapping("/{id}")

@@ -100,4 +100,30 @@ class ProdutoControllerTest {
         mvc.perform(delete("/api/produtos/2"))
                 .andExpect(status().isNotFound());
     }
+
+
+    @Test
+    void search_WithFilters_ShouldReturnFilteredProdutos() throws Exception {
+        List<Produto> filtered = List.of(
+                new Produto("1", "A", 10.0, "Madeira", "Desc", "Azul")
+        );
+        when(service.search(
+                eq("A"),
+                eq(5.0),
+                eq(15.0),
+                eq("Madeira"),
+                eq("Azul")
+        )).thenReturn(filtered);
+
+        mvc.perform(get("/api/produtos/search")
+                        .param("nome", "A")
+                        .param("minPrice", "5.0")
+                        .param("maxPrice", "15.0")
+                        .param("material", "Madeira")
+                        .param("cor", "Azul")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value("1"))
+                .andExpect(jsonPath("$[0].nome").value("A"));
+    }
 }

@@ -2,6 +2,7 @@ package com.ecopla.ecopla.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.eq;
 
 import com.ecopla.ecopla.model.Produto;
 import com.ecopla.ecopla.repository.ProdutoRepository;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +21,9 @@ class ProdutoServiceTest {
 
     @Mock
     private ProdutoRepository repo;
+
+    @Mock
+    private MongoTemplate mongoTemplate;
 
     @InjectMocks
     private ProdutoService service;
@@ -74,5 +80,21 @@ class ProdutoServiceTest {
     void deletar_ShouldInvokeRepository() {
         service.deletar("3");
         verify(repo).deleteById("3");
+    }
+
+    @Test
+    void search_ShouldUseMongoTemplateAndReturnResults() {
+        // given
+        List<Produto> expected = List.of(
+            new Produto("1", "Filtro", 20.0, "Madeira", "Descrição", "Vermelho")
+        );
+        when(mongoTemplate.find(any(Query.class), eq(Produto.class))).thenReturn(expected);
+
+        // when
+        List<Produto> result = service.search("Filtro", 10.0, 30.0, "Madeira", "Vermelho");
+
+        // then
+        assertEquals(expected, result);
+        verify(mongoTemplate).find(any(Query.class), eq(Produto.class));
     }
 }
